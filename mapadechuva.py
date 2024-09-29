@@ -60,7 +60,7 @@ def processar_dados(data):
     return pd.DataFrame(previsao)
 
 def plotar_previsao(df):
-    fig, ax = plt.subplots(figsize=(12, 6))  # Aumentando o tamanho do gráfico
+    fig, ax = plt.subplots(figsize=(12, 6))
 
     # Estilo do gráfico
     bars = ax.bar(df['data'], df['precipitação'], color='lightblue', edgecolor='blue', alpha=0.9)
@@ -73,10 +73,11 @@ def plotar_previsao(df):
     # Títulos e Rótulos
     ax.set_xlabel('Data', fontsize=16)
     ax.set_ylabel('Precipitação (mm)', fontsize=16)
-    ax.set_title('Previsão de Precipitação para os Próximos Dias', fontsize=20, pad=20)  # Aumentando o espaçamento com pad
+    ax.set_title('Previsão de Precipitação para os Próximos Dias', fontsize=20, pad=20)
 
     # Ajustar os limites do eixo Y
-    ax.set_ylim(0, max(df['precipitação']) + 5)
+    ax.set_ylim(0, 100)  # Limite de 0 a 100 mm
+    ax.set_yticks(range(0, 101, 10))  # Espaçamento de 10 em 10 mm
 
     # Melhorando a aparência
     ax.spines['top'].set_visible(False)
