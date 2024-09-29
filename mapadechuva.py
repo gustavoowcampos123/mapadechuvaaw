@@ -3,15 +3,21 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
+from geopy.geocoders import Nominatim
+
+def obter_coordenadas(cidade):
+    geolocator = Nominatim(user_agent="geoapiExercises")
+    location = geolocator.geocode(cidade)
+    if location:
+        return location.latitude, location.longitude
+    return None, None
 
 def obter_previsao(cidade):
-    # Exemplo de coordenadas para São Paulo (você pode usar um serviço de geocodificação para converter cidades em coordenadas)
-    coordenadas = {'São Paulo': (-23.5505, -46.6333)}
+    lat, lon = obter_coordenadas(cidade)
     
-    if cidade not in coordenadas:
+    if lat is None or lon is None:
         return None
     
-    lat, lon = coordenadas[cidade]
     url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=precipitation_sum&timezone=America/Sao_Paulo"
     resposta = requests.get(url)
     return resposta.json()
@@ -38,7 +44,7 @@ def plotar_previsao(df):
 
 # Interface do Streamlit
 st.title('Previsão de Chuva para Obras de Engenharia')
-cidade = st.text_input('Digite o nome da cidade (ex: São Paulo):')
+cidade = st.text_input('Digite o nome da cidade (ex: São Paulo, Rio de Janeiro, etc.):')
 
 if st.button('Obter Previsão'):
     if cidade:
