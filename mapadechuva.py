@@ -49,11 +49,9 @@ coordenadas = {
 }
 
 def obter_coordenadas(cidade):
-    # Tenta obter coordenadas de cidades predefinidas
     if cidade in coordenadas:
         return coordenadas[cidade]
 
-    # Se não encontrar, tenta geocodificação
     try:
         geolocator = Nominatim(user_agent="geoapiExercises")
         location = geolocator.geocode(cidade)
@@ -85,12 +83,33 @@ def processar_dados(data):
 
 def plotar_previsao(df):
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.bar(df['data'], df['precipitação'], color='blue', alpha=0.6)
+
+    # Estilo do gráfico
+    bars = ax.bar(df['data'], df['precipitação'], color='skyblue', edgecolor='blue', alpha=0.7)
     
-    ax.set_xlabel('Data')
-    ax.set_ylabel('Precipitação (mm)')
-    ax.set_title('Previsão de Precipitação para os Próximos Dias')
-    ax.grid()
+    # Anotações
+    for bar in bars:
+        yval = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2, yval + 0.5, round(yval, 1), ha='center', va='bottom')
+
+    # Títulos e Rótulos
+    ax.set_xlabel('Data', fontsize=14)
+    ax.set_ylabel('Precipitação (mm)', fontsize=14)
+    ax.set_title('Previsão de Precipitação para os Próximos Dias', fontsize=16)
+    
+    # Melhorando a aparência
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.grid(axis='y', linestyle='--', alpha=0.7)
+
+    # Adicionando ícones (caso tenha imagens locais)
+    # Você pode substituir pela imagem de ícone de chuva que preferir
+    for index, row in df.iterrows():
+        if row['precipitação'] > 0:
+            ax.text(row['data'], row['precipitação'], '☔', fontsize=20, ha='center')
+
+    plt.xticks(rotation=45)
+    plt.tight_layout()
 
     return fig
 
