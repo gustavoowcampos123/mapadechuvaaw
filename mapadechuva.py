@@ -60,20 +60,23 @@ def processar_dados(data):
     return pd.DataFrame(previsao)
 
 def plotar_previsao(df):
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(12, 6))  # Aumentando o tamanho do gráfico
 
     # Estilo do gráfico
-    bars = ax.bar(df['data'], df['precipitação'], color='skyblue', edgecolor='blue', alpha=0.7)
+    bars = ax.bar(df['data'], df['precipitação'], color='lightblue', edgecolor='blue', alpha=0.9)
 
     # Anotações
     for bar in bars:
         yval = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, yval + 0.5, round(yval, 1), ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width()/2, yval + 0.1, round(yval, 2), ha='center', va='bottom')
 
     # Títulos e Rótulos
-    ax.set_xlabel('Data', fontsize=14)
-    ax.set_ylabel('Precipitação (mm)', fontsize=14)
-    ax.set_title('Previsão de Precipitação para os Próximos Dias', fontsize=16, pad=20)  # Aumenta o espaçamento com pad
+    ax.set_xlabel('Data', fontsize=16)
+    ax.set_ylabel('Precipitação (mm)', fontsize=16)
+    ax.set_title('Previsão de Precipitação para os Próximos Dias', fontsize=20, pad=20)  # Aumentando o espaçamento com pad
+
+    # Ajustar os limites do eixo Y
+    ax.set_ylim(0, max(df['precipitação']) + 5)
 
     # Melhorando a aparência
     ax.spines['top'].set_visible(False)
@@ -87,7 +90,7 @@ def plotar_previsao(df):
         else:
             ax.text(row['data'], 0.5, '☀️', fontsize=20, ha='center')  # Ícone de sol para dias sem chuva
 
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=45, fontsize=12)
     plt.tight_layout()
 
     return fig
