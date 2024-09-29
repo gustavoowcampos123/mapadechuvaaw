@@ -6,11 +6,14 @@ from datetime import datetime
 from geopy.geocoders import Nominatim
 
 def obter_coordenadas(cidade):
-    geolocator = Nominatim(user_agent="geoapiExercises")
-    location = geolocator.geocode(cidade)
-    if location:
-        return location.latitude, location.longitude
-    return None, None
+    coordenadas = {
+        'São Paulo': (-23.5505, -46.6333),
+        'Rio de Janeiro': (-22.9068, -43.1729),
+        'Belo Horizonte': (-19.9167, -43.9345),
+        # Adicione outras cidades conforme necessário
+    }
+    
+    return coordenadas.get(cidade, (None, None))
 
 def obter_previsao(cidade):
     lat, lon = obter_coordenadas(cidade)
