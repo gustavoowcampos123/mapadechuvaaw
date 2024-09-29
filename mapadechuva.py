@@ -86,7 +86,7 @@ def plotar_previsao(df):
 
     # Estilo do gráfico
     bars = ax.bar(df['data'], df['precipitação'], color='skyblue', edgecolor='blue', alpha=0.7)
-    
+
     # Anotações
     for bar in bars:
         yval = bar.get_height()
@@ -95,18 +95,19 @@ def plotar_previsao(df):
     # Títulos e Rótulos
     ax.set_xlabel('Data', fontsize=14)
     ax.set_ylabel('Precipitação (mm)', fontsize=14)
-    ax.set_title('Previsão de Precipitação para os Próximos Dias', fontsize=16)
-    
+    ax.set_title('Previsão de Precipitação para os Próximos Dias', fontsize=16, pad=20)  # Aumenta o espaçamento com pad
+
     # Melhorando a aparência
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.grid(axis='y', linestyle='--', alpha=0.7)
 
-    # Adicionando ícones (caso tenha imagens locais)
-    # Você pode substituir pela imagem de ícone de chuva que preferir
+    # Adicionando ícones
     for index, row in df.iterrows():
         if row['precipitação'] > 0:
             ax.text(row['data'], row['precipitação'], '☔', fontsize=20, ha='center')
+        else:
+            ax.text(row['data'], 0.5, '☀️', fontsize=20, ha='center')  # Ícone de sol para dias sem chuva
 
     plt.xticks(rotation=45)
     plt.tight_layout()
